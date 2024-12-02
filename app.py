@@ -1,11 +1,10 @@
-#from flask import Flask
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import re
+import sys
 
-url = "https://www.usafis.org/green-card-information/dv-lottery/dv-lottery-results/"
-
+url = sys.argv[1]
 page = requests.get(url)
 
 soup = BeautifulSoup(page.content, "html.parser")
@@ -27,3 +26,9 @@ for index, row in enumerate(rows):
 
 df = pd.DataFrame(data, columns=columns)
 df.to_csv('download.csv', index=False)
+
+ 
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print(f"Usage: python test.py {sys.argv[1]}")
+        sys.exit(0)
